@@ -32,6 +32,12 @@ Password_rev: 04_01_00_36
 2) Login with: root: ah9mee2
 3) Now ssh to your router: `ssh -oHostKeyAlgorithms=+ssh-dss root@192.168.1.1`
 
+## Login: User 2 (default password for all Bredband2 routers)
+
+```
+Username: admin
+Password: Kan66True#
+```
 ## Secure your router
 
 * Copy and paste
