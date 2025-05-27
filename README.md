@@ -29,8 +29,11 @@ Password_rev: 04_01_00_36
 ```
 
 1) Browse to: http://192.168.1.1/tools/ssh
-2) Login with: root: ah9mee2
+2) Login with: root: `ah9mee2`
 3) Now ssh to your router: `ssh -oHostKeyAlgorithms=+ssh-dss root@192.168.1.1`
+4) Set new root password: `cset /webui/user/1/password <password>` 
+
+Enjoy!
 
 ## Login: User 2 (default password for all Bredband2 routers)
 
@@ -38,26 +41,8 @@ Password_rev: 04_01_00_36
 Username: admin
 Password: Kan66True#
 ```
-## Secure your router
 
-* Copy and paste
-
-```bash
-userName="changeme"
-userPassword="changeme"
-
-for users in 1 2 3; do 
-  cset ${userName} /webui/user/${users}/name 
-  cset ${userPassword} /webui/user/${users}/password
-done
-```
-
-Now login with your new user/password as you chose in the example above.
-
-
-Enjoy!
-
-## Login: User 2 (alltele/bredband2 default password for admin)
+## Login: User 3 (alltele/bredband2 default password for admin)
 
 Before you connect your device to internet, default login is: admin:admin and depening what you have set to /etc/trol.conf you will get the ISP password for the config you have set, as default: `trol.conf.bb2` on this device from Bredband2
 
@@ -75,6 +60,13 @@ Username: user
 Password: user
 Password_def: T8,b1=l9,G0
 Password_rev: 04_01_00_36
+```
+
+
+### Enable debugging in webui
+
+```bash
+cset /webui/debug True
 ```
 
 ### /proc/version
@@ -531,18 +523,70 @@ GNU ld (GNU Binutils) 2.29.1
 aespipe -d -e aes256 -H sha512 -p 5 5</home/wuseman/downloads/password-file.txt < /home/wuseman/downloads/vood_19700101_004208.cfg | tar -xz -C /home/wuseman/downloads/restore_directory
 ```
 
+### Clear all iptable rules
+
+```bash
 
 
-## Author
+# - iNFO --------------------------------------
+#
+#   Author: wuseman
+# FileName: iptables-clear.sh
+#  Created: 2023-11-07 (08:12:47)
+# Modified: 2024-01-25 (19:43:36)
+#  Version: 1.0
+#  License: MIT
+#
+# ---------------------------------------------
+
+# Function to remove IPv4 iptables rules
+remove_ipv4_rules() {
+        echo "----------------------------"
+        echo "Removing all IPv4 rules..."
+        iptables -P INPUT ACCEPT
+        iptables -P FORWARD ACCEPT
+        iptables -P OUTPUT ACCEPT
+        iptables -t nat -F &>/dev/null
+        iptables -t mangle -F &>/dev/null
+        iptables -F
+        iptables -X
+        echo "...Done"
+}
+
+# Function to remove IPv6 ip6tables rules
+remove_ipv6_rules() {
+        echo "----------------------------"
+        echo "Removing all IPv6 rules..."
+        ip6tables -P INPUT ACCEPT
+        ip6tables -P FORWARD ACCEPT
+        ip6tables -P OUTPUT ACCEPT
+        ip6tables -t nat -F &>/dev/null
+        ip6tables -t mangle -F &>/dev/null
+        ip6tables -F
+        ip6tables -X
+        echo "...Done"
+}
+
+# Check if the script is run as root
+if [ "$EUID" -ne 0 ]; then
+        echo "Please run as root"
+        exit
+fi
+
+# Check for IPv4 and IPv6 configurations
+ipv4Config="$(grep . /proc/net/fib_trie)"
+ipv6Config="$(grep '.' /proc/net/if_inet6)"
+
+# Apply rules removal based on configurations
+[[ -n "$ipv4Config" ]] && remove_ipv4_rules
+[[ -n "$ipv6Config" ]] && remove_ipv6_rules
+
+echo "----------------------------"
 
 ```
-© 2023 - wuseman <wuseman@nr1.nu>
-```
 
-### Contact Page
 
-  * Gentoo: https://wiki.gentoo.org/wiki/User:Wuseman
-  * LibeaChat: https://web.libera.chat/
+
 
 
 
