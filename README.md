@@ -53,7 +53,7 @@ Password_def: b7,T7-I7/i3/E3+i0
 Password_rev: 04_01_00_36
 ```
 
-## Login: User 3 (you probably know this already)
+## Login: User 4 (you probably know this already)
 
 ```
 Username: user
@@ -62,6 +62,11 @@ Password_def: T8,b1=l9,G0
 Password_rev: 04_01_00_36
 ```
 
+### Set password with chpasswd (needed for ssh to work, webui password does not work for ssh and telnetd)
+
+```
+echo "root:passwordToUse" | chpasswd
+```
 
 ### Enable debugging in webui
 
