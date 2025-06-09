@@ -42,7 +42,7 @@ Username: admin
 Password: Kan66True#
 ```
 
-## Login: User 3 (alltele/bredband2 default password for admin)
+## Login: User 3 (alltele default password for admin)
 
 Before you connect your device to internet, default login is: admin:admin and depening what you have set to /etc/trol.conf you will get the ISP password for the config you have set, as default: `trol.conf.bb2` on this device from Bredband2
 
@@ -53,7 +53,14 @@ Password_def: b7,T7-I7/i3/E3+i0
 Password_rev: 04_01_00_36
 ```
 
-## Login: User 4 (you probably know this already)
+## Login: User 4 (bredband2 default password for admin)
+
+```
+Username: admin
+Password: Kan66True#
+```
+
+## Login: User 5 (you probably know this already)
 
 ```
 Username: user
